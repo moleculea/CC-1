@@ -44,7 +44,7 @@ class output(object):
 
     @staticmethod
     def debug(msg):
-        if os.environ.has_key("COLOR_OUTPUT_VERBOSE"):
+        if "COLOR_OUTPUT_VERBOSE" in os.environ:
             output.__out(output.DEBUG, msg)
 
     @staticmethod

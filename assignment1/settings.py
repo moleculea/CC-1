@@ -1,8 +1,16 @@
-# For security concerns and better portability, the following variables 
+# For security concerns and better portability, the following variables
 # are set in ~/.boto:
 # `AWS_ACCESS_KEY_ID'
 # `AWS_SECRET_ACCESS_KEY'
+import os
 
+
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+DB_PATH = os.path.abspath(os.path.join(PROJECT_PATH, os.pardir, "db"))
+DB_FILES = {
+    "addresses": os.path.join(DB_PATH, "addresses"),
+    "snapshots": os.path.join(DB_PATH, "snapshots"),
+}
 
 EC2_DEFAULT_REGION = "us-east-1"
 EC2_DEFAULT_EBS_AZ = "us-east-1b"
@@ -16,5 +24,5 @@ EC2_DEFAULT_SG_DESC = "security group for assignment1"
 EC2_DEFAULT_SG_TCP_PORTS = [22, 80]
 EC2_DEFAULT_KEY_NAME = "assignment1"
 EC2_DEFAULT_KEY_PATH = "~"
-EC2_DEFAULT_WAIT_INTERVAL = 10
-EC2_DEFAULT_DATA_DEVICE = "/dev/sdh"
+EC2_DEFAULT_WAIT_INTERVAL = 5
+EC2_DEFAULT_DATA_DEVICE = "/dev/sdf"

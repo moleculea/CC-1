@@ -20,4 +20,3 @@ def get_security_group(conn, name=EC2_DEFAULT_SG_NAME):
             return sg
     # If not found, initialize a new security group
     return initialize_security_group(conn)
-

@@ -1,33 +1,17 @@
 import os
+import datetime
 from assignment1.conn import conn
-from assignment1.instances import list_instances_info
-from assignment1.cw import cw
-
-from boto.ec2.blockdevicemapping import BlockDeviceMapping, BlockDeviceType
-
+from assignment1.instances import (list_instances_info, initialize_instances,
+                                   store_instances, restore_instances)
+from assignment1.settings import DB_PATH, PROJECT_PATH
 
 def main():
-
-    rs = conn.get_all_security_groups()
-    print rs
-    vols = conn.get_all_volumes()
-    print vols
-    for vol in vols:
-        print vol.attach_data.device
-        print vol.status
-
-    #dev_sda1 = BlockDeviceType(snapshot_id="snap-6a6b5669")  # root volume
-    #dev_sdf = BlockDeviceType(snapshot_id="snap-bd2310be")  # data volume
-    #bdm = BlockDeviceMapping()
-    #bdm["/dev/sda1"] = dev_sda1
-    #bdm["/dev/xvdf"] = dev_sdf
-
-    #conn.register_image(name="CC-AMI-3", root_device_name="/dev/sda1", block_device_map=bdm)
-
-    #conn.create_image(instance_id="i-bbfda8c2", name="CC-AMI-4")
+    #initialize_instances(conn)
+    store_instances(conn)
+    #restore_instances(conn)
     list_instances_info(conn)
-    print cw.list_metrics()[5]
 
 
 if __name__ == "__main__":
+    os.environ["COLOR_OUTPUT_VERBOSE"] = "1"
     main()
