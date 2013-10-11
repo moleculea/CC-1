@@ -80,6 +80,8 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
         # Get all idle instances
         instances = get_idle_instances(conn)
         if not instances:
+            all_instances = get_instances(conn)
+            list_instances_info(conn, all_instances)
             output.warning("There is no idle instance at this time.")
             return
     else:
@@ -99,7 +101,7 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
     data += rows
 
     source_snapshots = []
-
+    old_ami_snapshot_ids = []
     for volume in volumes:
         # Detach the data volume and create snapshots
         instance_id = volume.attach_data.instance_id
@@ -148,9 +150,13 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
         image = conn.get_image(instance.image_id)
         if image:
             if image.id != EC2_DEFAULT_IMAGE_ID:
+                bdm = image.block_device_mapping
+                snapshot_id = bdm["/dev/sda1"].snapshot_id
+                old_ami_snapshot_ids.append(snapshot_id)
                 msg = "Deleting old AMI of instance %s..." % name
                 output.debug(msg)
                 image.deregister()
+
 
         msg = "Creating AMI from instance %s..." % (name)
         output.debug(msg)
@@ -177,10 +183,16 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
         assert instance.update() == "terminated"
 
     delete_all_data_volumes(conn, volume_ids=volume_ids)
+
     if copy_snapshots:
         output.debug("Deleting source snapshots... ")
         for snapshot in source_snapshots:
             snapshot.delete()
+
+    output.debug("Deleting snapshots of old AMIs...")
+    for sid in old_ami_snapshot_ids:
+        conn.delete_snapshot(sid)
+
     output.success("All idle instances are stored and backed up.")
 
 
