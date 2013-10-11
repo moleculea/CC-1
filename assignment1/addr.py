@@ -19,6 +19,7 @@ def assign_addresses(conn, instances):
     for instance in instances:
         public_ip = initialize_address(conn)
         conn.associate_address(instance.id, public_ip)
+        instance.update()  # Update assigned tags
         name = instance.tags.get("Name", "-")
         data.append([name, public_ip])
     filename = DB_FILES["addresses"]
@@ -42,8 +43,9 @@ def get_addresses():
     return addresses
 
 
-def release_addresses(conn):
+def release_all_addresses(conn):
     output.debug("Releasing all elastic IPs...")
     all_addresses = conn.get_all_addresses()
     for address in all_addresses:
-        address.release()
+        if not address.instance_id:
+            address.release()
