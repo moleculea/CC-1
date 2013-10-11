@@ -118,7 +118,7 @@ def delete_autoscale_group(conn, name):
     instances = conn.get_only_instances(instance_ids)
     msg = "Shutting down instances in this group..."
     output.debug(msg)
-    activities = as_conn.get_all_activities(ag)
+    #activities = as_conn.get_all_activities(ag)
     time.sleep(EC2_DEFAULT_WAIT_INTERVAL)
     for instance in instances:
         while instance.update() == "shutting-down":
@@ -141,4 +141,3 @@ def get_launch_configuration(conn, name, image_id):
         if lc.name == name:
             return lc
     return create_launch_configuration(conn, name, image_id)
-

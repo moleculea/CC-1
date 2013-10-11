@@ -13,11 +13,11 @@ from .keys import get_key_pair
 from .settings import (EC2_DEFAULT_INSTANCE_TYPE, EC2_DEFAULT_IMAGE_ID,
                        EC2_DEFAULT_INSTANCE_NUM, EC2_DEFAULT_TAG_NAMES,
                        EC2_DEFAULT_WAIT_INTERVAL, EC2_DEFAULT_DATA_DEVICE,
-                       EC2_DEFAULT_REGION, DB_FILES, EC2_DEFAULT_EBS_AZ)
+                       EC2_DEFAULT_REGION, DB_FILES, EC2_DEFAULT_EBS_AZ,
+                       EC2_INSTANCE_IDLE_TIME, EC2_INSTANCE_IDLE_CPU)
 from .sg import get_security_group
 from .utils import output
 import db
-import pdb
 
 
 def initialize_instances(conn):
@@ -181,7 +181,7 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
         output.debug("Deleting source snapshots... ")
         for snapshot in source_snapshots:
             snapshot.delete()
-    output.success("All instances are stored and backed up.")
+    output.success("All idle instances are stored and backed up.")
 
 
 def restore_instances(conn):
@@ -276,7 +276,7 @@ def get_instances(conn, assert_num=False, state="running"):
 def list_instances_info(conn, instances=None):
     if not instances:
         instances = get_instances(conn)
-    print _format_line("Name", "Instance ID", "State", "CPU Util")
+    print _format_line("Name", "Instance ID", "State", "CPU Util (%)")
     print '-' * 60
     for instance in instances:
         name = instance.tags.get("Name", "-")
@@ -321,7 +321,8 @@ def delete_all_images(conn):
         image.deregister()
 
 
-def get_idle_instances(conn, time_limit=17, cpu_limit=50):
+def get_idle_instances(conn, time_limit=EC2_INSTANCE_IDLE_TIME,
+                       cpu_limit=EC2_INSTANCE_IDLE_CPU):
     """Get instances whose CPU utilization is less than 5 percent for
     for 10 minutes, or if it is after 5:00 p.m.
         time_limit is a number (0-24) representing 24-hour

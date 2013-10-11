@@ -5,19 +5,19 @@ from assignment1.conn import conn
 from assignment1.instances import (list_instances_info, initialize_instances,
                                    store_instances, restore_instances,
                                    autoscale_instances, stop_autoscale)
-from assignment1.settings import DB_PATH, PROJECT_PATH
 from assignment1.cw import cw_conn, get_cpu_stat
 from assignment1.utils import output
 
 
 CMD_USAGE = "Usage: python run.py init|store|restore|list|scale|nscale"
 INVALID_USAGE = ("Invalid Argument: '%s'. Must be" 
-                 " init|store|restore|list|scale|nscale")
+                 " init|store|store-s3|store-force|restore|list|scale|nscale")
 
 CTRL_ARGS = {
     "init": "initialize_instances(conn)",
     "store": "store_instances(conn, False, True)",
     "store-s3": "store_instances(conn, True, True)",
+    "store-force": "store_instances(conn)",
     "restore": "restore_instances(conn)",
     "list": "list_instances_info(conn)",
     "scale": "autoscale_instances(conn)",
@@ -26,14 +26,6 @@ CTRL_ARGS = {
 
 
 def main():
-    #initialize_instances(conn)
-    #list_instances_info(conn)
-    #store_instances(conn, True, True)
-    #restore_instances(conn)
-    #list_instances_info(conn)
-    #print get_cpu_stat(cw_conn, "i-2f410248", 2)
-    #autoscale_instances(conn)
-    #stop_autoscale()
     cmd()
 
 
@@ -56,5 +48,7 @@ def cmd():
 
 
 if __name__ == "__main__":
+
+    # Setting default output mode to verbose
     os.environ["COLOR_OUTPUT_VERBOSE"] = "1"
     main()

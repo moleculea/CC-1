@@ -27,6 +27,13 @@ EC2_DEFAULT_KEY_PATH = "~"
 EC2_DEFAULT_WAIT_INTERVAL = 5
 EC2_DEFAULT_DATA_DEVICE = "/dev/sdf"
 
+# Hour (24-hour) after which all instances will be labeled `idle'
+EC2_INSTANCE_IDLE_TIME = 19
+
+# CPU utilization (percent) where an instance will be labeled `idle'
+EC2_INSTANCE_IDLE_CPU = 20
+
+# Autoscale config
 AS_DEFAULT_MIN_SIZE = 1
 AS_DEFAULT_MAX_SIZE = 3
 AS_DEFAULT_CPU_UP = "80"
