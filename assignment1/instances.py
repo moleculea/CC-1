@@ -284,6 +284,7 @@ def list_instances_info(conn, instances=None):
         state = instance.state
         cpu_util = "%.2f" % get_cpu_stat(cw_conn, instance_id)
         print _format_line(name, instance_id, state, cpu_util)
+    return len(instances)
 
 
 def _format_line(*items):
@@ -320,7 +321,7 @@ def delete_all_images(conn):
         image.deregister()
 
 
-def get_idle_instances(conn, time_limit=0, cpu_limit=999999):
+def get_idle_instances(conn, time_limit=17, cpu_limit=50):
     """Get instances whose CPU utilization is less than 5 percent for
     for 10 minutes, or if it is after 5:00 p.m.
         time_limit is a number (0-24) representing 24-hour

@@ -16,7 +16,8 @@ INVALID_USAGE = ("Invalid Argument: '%s'. Must be"
 
 CTRL_ARGS = {
     "init": "initialize_instances(conn)",
-    "store": "store_instances(conn, True, True)",
+    "store": "store_instances(conn, False, True)",
+    "store-s3": "store_instances(conn, True, True)",
     "restore": "restore_instances(conn)",
     "list": "list_instances_info(conn)",
     "scale": "autoscale_instances(conn)",

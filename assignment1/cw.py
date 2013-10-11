@@ -27,5 +27,6 @@ def get_cpu_stat(cw_conn, instanced_id, minutes=10):
 
     if stat:
         percent = stat[0]["Average"]
-        return percent * 100
+        return percent
     return 0.00
+
