@@ -41,11 +41,17 @@ def cmd():
         print CMD_USAGE
         sys.exit(1)
     arg = sys.argv[1]
+
+    if arg in ["-h", "--help"]:
+        print CMD_USAGE
+        sys.exit(0)
+
     if arg in CTRL_ARGS:
         statement = CTRL_ARGS[arg]
         eval(statement)
     else:
         output.error(INVALID_USAGE % arg)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

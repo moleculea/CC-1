@@ -145,11 +145,12 @@ def store_instances(conn, copy_snapshots=False, idle_only=False):
 
         name = instance.tags.get("Name", "-")
 
-        msg = "Deleting old AMI of instance %s..." % name
-        output.debug(msg)
         image = conn.get_image(instance.image_id)
         if image:
-            image.delete()
+            if image.id != EC2_DEFAULT_IMAGE_ID:
+                msg = "Deleting old AMI of instance %s..." % name
+                output.debug(msg)
+                image.deregister()
 
         msg = "Creating AMI from instance %s..." % (name)
         output.debug(msg)
@@ -203,6 +204,7 @@ def restore_instances(conn):
             instance_type=EC2_DEFAULT_INSTANCE_TYPE,
             placement=EC2_DEFAULT_EBS_AZ,
             monitoring_enabled=True)
+        time.sleep(EC2_DEFAULT_WAIT_INTERVAL)
         instance = reservation.instances[0]
         conn.create_tags([instance.id], {"Name": image.name})
         image_name_mapping[image.name] = instance.id
@@ -320,7 +322,9 @@ def delete_all_images(conn):
 
 def get_idle_instances(conn, time_limit=0, cpu_limit=999999):
     """Get instances whose CPU utilization is less than 5 percent for
-    for 10 minutes, or if it is after 5:00 p.m."""
+    for 10 minutes, or if it is after 5:00 p.m.
+        time_limit is a number (0-24) representing 24-hour
+    """
     instances = get_instances(conn)
     idle_instances = []
     now = datetime.datetime.now()

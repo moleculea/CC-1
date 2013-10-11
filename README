@@ -1,0 +1,24 @@
+Assignment 1: On-demand Elastic IT Infrastructure
+
+Usage:
+    python run.py control_arugment
+
+    control_argument:
+        init     -- Initialize instances (one-time operation)
+                    Create and launch instances from public AMIs provided by AWS
+
+        store    -- Store instances
+                    Detach data volumes from instances, create volume snapshots, create AMIs and terminate instances
+
+        restore  -- Restore instances
+                    Launch instances from AMIs, create volume from volume snapshots, attach volumes to the instances
+
+        list     -- List instances
+                    List currently running instances
+
+        scale    -- Autoscale instances
+                    Create Autoscale groups and scaling alarms
+
+        nscale   -- Stop autoscale
+                    Delete Autoscale groups
+

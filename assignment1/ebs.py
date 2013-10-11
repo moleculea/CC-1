@@ -37,7 +37,7 @@ def delete_all_data_volumes(conn, volume_ids=None):
 
 
 def delete_all_snapshots(conn, snapshot_ids=None):
-    output.debug("Deleting all snapshots....")
+    output.debug("Deleting all (data) snapshots....")
     snapshots = conn.get_all_snapshots(snapshot_ids=snapshot_ids)
     for snapshot in snapshots:
         conn.delete_snapshot(snapshot.id)

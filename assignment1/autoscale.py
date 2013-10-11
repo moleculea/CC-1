@@ -1,3 +1,4 @@
+import sys
 import time
 import boto.ec2
 from boto.ec2.autoscale import (AutoScalingGroup,
@@ -99,7 +100,8 @@ def setup_autoscale_group(conn, name, image_id):
         fmsg = ("Autoscale group %s already/still exists. "
                 "Please try again later, or make sure this group is deleted.")
         msg = fmsg % name
-        output.warning()
+        output.warning(fmsg)
+        sys.exit(0)
     create_auto_scaling_group(name, lc)
     #as_conn.get_all_policies(policy_names=["scale_up", "scale_down"])
     create_scaling_policies(name)
@@ -127,6 +129,7 @@ def delete_autoscale_group(conn, name):
         ag.delete()
     except BotoServerError:
         output.warning("This group still has activities. Try again later.")
+        sys.exit(0)
 
     output.success("Autoscale group %s deleted." % name)
 
