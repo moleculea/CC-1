@@ -4,14 +4,16 @@ import sys
 from assignment1.conn import conn
 from assignment1.instances import (list_instances_info, initialize_instances,
                                    store_instances, restore_instances,
-                                   autoscale_instances, stop_autoscale)
+                                   autoscale_instances, stop_autoscale,
+                                   flush_db)
 from assignment1.cw import cw_conn, get_cpu_stat
 from assignment1.utils import output
 
 
 CMD_USAGE = "Usage: python run.py init|store|restore|list|scale|nscale"
 INVALID_USAGE = ("Invalid Argument: '%s'. Must be" 
-                 " init|store|store-s3|store-force|restore|list|scale|nscale")
+                 " init|store|store-s3|store-force|restore|list|scale|nscale"
+                 "|flushdb")
 
 CTRL_ARGS = {
     "init": "initialize_instances(conn)",
@@ -21,7 +23,8 @@ CTRL_ARGS = {
     "restore": "restore_instances(conn)",
     "list": "list_instances_info(conn)",
     "scale": "autoscale_instances(conn)",
-    "nscale": "stop_autoscale()"
+    "nscale": "stop_autoscale()",
+    "flushdb": "flush_db()",
 }
 
 

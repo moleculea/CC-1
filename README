@@ -29,3 +29,5 @@ Usage:
         nscale       -- Stop autoscale
                         Delete Autoscale groups
 
+        flushdb      -- Flush local DB files
+

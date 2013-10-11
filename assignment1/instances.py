@@ -26,8 +26,7 @@ def initialize_instances(conn):
     * Create and launch instances from public AMIs provided by AWS
     """
     # Empty local DB files
-    db.write_data(DB_FILES["addresses"], [])
-    db.write_data(DB_FILES["snapshots"], [])
+    flush_db()
 
     # Create or get (if any) security groups and key pairs
     sg = get_security_group(conn)
@@ -358,3 +357,10 @@ def get_idle_instances(conn, time_limit=EC2_INSTANCE_IDLE_TIME,
             output.debug("This instance is to be stored.")
             idle_instances.append(instance)
     return idle_instances
+
+
+def flush_db():
+    output.debug("Flushing local DB files...")
+    db.write_data(DB_FILES["addresses"], [])
+    db.write_data(DB_FILES["snapshots"], [])
+    output.success("Local DB file are flushed.")
