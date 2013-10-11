@@ -1,9 +1,0 @@
-
-
-
-1. Use create_snapshot to create snapshots from EBS data volume and root volume
-2. Use copy_snapshot to copy these snapshots to S3
-3. Create BlockDeviceMapping of the EBS data and root volume to be used by the 
-the image by mapping device names to their snapshots
-3. Use register_image to register the AMI using the block_device_map from Step 3.
-
