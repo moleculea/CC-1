@@ -1,7 +1,15 @@
 Assignment 1: On-demand Elastic IT Infrastructure
 
+Prerequisites:
+    1. AWS SDK for Python (Boto): boto 2.14
+        $ pip install boto
+    2. Environment variables for credentials at ~/.boto:
+        [Credentials]
+        aws_access_key_id = <YOUR_ACCESS_KEY>
+        aws_secret_access_key = <YOUR_SECRET_ACCESS_KEY> 
+
 Usage:
-    python run.py control_arugment
+    $ python run.py control_argument
 
     control_argument:
 
