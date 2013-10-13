@@ -54,3 +54,9 @@ class output(object):
     @staticmethod
     def success(msg):
         output.__out(output.SUCCESS, msg)
+
+
+def get_absolute_path(path):
+    p = os.path.expanduser(path)
+    return os.path.abspath(p)
+
