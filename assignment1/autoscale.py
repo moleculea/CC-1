@@ -24,7 +24,7 @@ def create_launch_configuration(conn, name, image_id):
     key_pair = get_key_pair(conn)
 
     lc = LaunchConfiguration(name=name, image_id=image_id,
-                             key_name=key_pair.name, security_groups=[sg],
+                             key_name=key_pair.name, security_groups=[sg.name],
                              instance_type=EC2_DEFAULT_INSTANCE_TYPE,
                              instance_monitoring=True)
 
@@ -69,7 +69,7 @@ def create_scaling_alarms(cw_conn, as_name):
     alarm_dimensions = {"AutoScalingGroupName": as_name}
 
     scale_up_alarm = MetricAlarm(
-        name='scale_up_on_cpu', namespace='AWS/EC2',
+        name='scale_up_on_cpu' + as_name, namespace='AWS/EC2',
         metric='CPUUtilization', statistic='Average',
         comparison='>', threshold=AS_DEFAULT_CPU_UP,
         period='60', evaluation_periods=2,
@@ -77,7 +77,7 @@ def create_scaling_alarms(cw_conn, as_name):
         dimensions=alarm_dimensions)
 
     scale_down_alarm = MetricAlarm(
-        name='scale_down_on_cpu', namespace='AWS/EC2',
+        name='scale_down_on_cpu_' + as_name, namespace='AWS/EC2',
         metric='CPUUtilization', statistic='Average',
         comparison='<', threshold=AS_DEFAULT_CPU_DOWN,
         period='60', evaluation_periods=2,
@@ -131,6 +131,8 @@ def delete_autoscale_group(conn, name):
         output.warning("This group still has activities. Try again later.")
         sys.exit(0)
 
+    # Delete launch configuration
+    as_conn.delete_launch_configuration(name)
     output.success("Autoscale group %s deleted." % name)
 
 

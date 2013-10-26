@@ -31,7 +31,7 @@ EC2_DEFAULT_DATA_DEVICE = "/dev/sdf"
 EC2_INSTANCE_IDLE_TIME = 19
 
 # CPU utilization (percent) where an instance will be labeled `idle'
-EC2_INSTANCE_IDLE_CPU = 20
+EC2_INSTANCE_IDLE_CPU = 50
 
 # Autoscale config
 AS_DEFAULT_MIN_SIZE = 1

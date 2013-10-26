@@ -18,7 +18,7 @@ from .settings import (EC2_DEFAULT_INSTANCE_TYPE, EC2_DEFAULT_IMAGE_ID,
 from .sg import get_security_group
 from .utils import output
 import db
-
+import pdb
 
 def initialize_instances(conn):
     """
